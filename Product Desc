@@ -10,14 +10,14 @@ Design a page to showcase a selection of pet clothing items.
 Display images, descriptions, and prices of the products.
 Allow users to add items to their cart without requiring them to log in.
 
---Shopping Cart:
+--Shopping Cart (Shopping-Cart):
 
 Implement a simple shopping cart functionality.
 Allow users to add items to their cart from the product showcase page.
 Display the selected items, quantities, and total price on the shopping cart page.
 Provide options to update quantities or remove items from the cart.
 
---Checkout:
+--Checkout (Shopping-Cart):
 
 Create a checkout page where users can enter their contact information and complete the order.
 Collect user details such as name, shipping address, and contact number.
