@@ -1,0 +1,21 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,500;0,700;1,400&family=Ranchers&display=swap');
+.navbar{
+    margin-right: 50px;
+    margin-left: 50px;
+    .navbar-brand{
+        font-family: 'Ranchers', cursive;
+        color: #000;
+        font-size: 26px;
+        font-family: Ranchers;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 101%;
+        letter-spacing: 0.26px;
+        text-transform: uppercase;
+    }
+}
+main{
+    margin-right: 50px;
+    margin-left: 50px;
+}
