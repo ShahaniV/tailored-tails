@@ -1,0 +1,31 @@
+--Table: users
+
+user_id: Unique identifier for each user (auto-incremented).
+username: User's username (limited to 50 characters).
+email: User's email address (limited to 255 characters).
+password: User's hashed password (limited to 255 characters).
+contact_number: User's contact number (limited to 20 characters).
+
+--Table: products
+
+product_id: Unique identifier for each product (auto-incremented).
+name: Name of the product (limited to 100 characters).
+description: Description of the product (text field).
+price: Price of the product (decimal with 10 digits in total and 2 decimal places).
+image_url: URL or path to the product image (limited to 255 characters).
+
+--Table: orders
+
+order_id: Unique identifier for each order (auto-incremented).
+user_id: ID of the user who placed the order (reference to the users table).
+order_date: Date and time when the order was placed.
+total_price: Total price of the order (decimal with 10 digits in total and 2 decimal places).
+The user_id column references the user who placed the order in the users table.
+
+--Table: order_items
+
+order_item_id: Unique identifier for each order item (auto-incremented).
+order_id: ID of the order the item belongs to (reference to the orders table).
+product_id: ID of the product in the order (reference to the products table).
+quantity: Quantity of the product ordered.
+

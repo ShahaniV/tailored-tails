@@ -1,113 +1,62 @@
 <?php
-session_start();
+// Establish the database connection
+$servername = "localhost";
+$username = "root";
+$password = ""; // Assuming the password is empty
+$dbname = "tailoredtailsusers";
+$conn = new mysqli($servername, $username, $password, $dbname);
 
-// MySQL database configuration
-$hostname = 'localhost';
-$username = 'root';
-$password = '';
-$database = 'tailoredtailsusers';
-
-// Establish a database connection
-$conn = mysqli_connect($hostname, $username, $password, $database);
-
-// Check if the connection was successful
-if (!$conn) {
-    die('Connection failed: ' . mysqli_connect_error());
+// Check the connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Sign up functionality
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
-    $email = $_POST['email'];
-    $contactNumber = $_POST['contact_number'];
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+// Process the login form submission
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
+    $loginUsername = $_POST["login_username"];
+    $loginPassword = $_POST["login_password"];
+    $rememberMe = isset($_POST["remember_me"]);
 
-    // Insert user data into the database
-    $sql = "INSERT INTO users (email, contact_number, username, password) VALUES ('$email', '$contactNumber', '$username', '$password')";
-    if (mysqli_query($conn, $sql)) {
-        echo 'Sign up successful. You can now login.';
-    } else {
-        echo 'Error: ' . $sql . '<br>' . mysqli_error($conn);
-    }
-}
+    // Retrieve the user details from the database based on the provided username
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $loginUsername);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-// Login functionality
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
-    $username = $_POST['username'];
-    $password = $_POST['password'];
+    if ($result->num_rows === 1) {
+        $row = $result->fetch_assoc();
+        $storedPassword = $row["password"];
 
-    // Retrieve user data from the database
-    $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-    $result = mysqli_query($conn, $sql);
+        // Verify the entered password with the stored password
+        if (password_verify($loginPassword, $storedPassword)) {
+            // Login successful
 
-    if (mysqli_num_rows($result) === 1) {
-        $_SESSION['username'] = $username;
+            // Set session or cookie based on "Remember Me" option
+            if ($rememberMe) {
+                // Set a cookie with username and hashed password
+                setcookie("username", $loginUsername, time() + (86400 * 30), "/"); // 30 days
+                setcookie("password", $storedPassword, time() + (86400 * 30), "/"); // 30 days
+            } else {
+                // Start a session and store username
+                session_start();
+                $_SESSION["username"] = $loginUsername;
+            }
 
-        if (isset($_POST['remember'])) {
-            // Set cookies if "Remember me" is checked
-            setcookie('username', $username, time() + (86400 * 30), '/');
-            setcookie('password', $password, time() + (86400 * 30), '/');
+            // Redirect to homepage.html
+            header("Location: http://localhost/AppDevGalura/tailored-tails/UI/homepage.html");
+            exit();
         } else {
-            // Delete cookies if "Remember me" is not checked
-            setcookie('username', '', time() - 3600, '/');
-            setcookie('password', '', time() - 3600, '/');
+            // Incorrect password, redirect back to the login page
+            header("Location: http://localhost/AppDevGalura/tailored-tails/Login-Logout/index.html");
+            exit();
         }
-
-        header('Location: home.php');
-        exit();
     } else {
-        echo 'Invalid username or password.';
+        // Username not found, redirect back to the login page
+        header("Location: http://localhost/AppDevGalura/tailored-tails/Login-Logout/index.html");
+        exit();
     }
 }
 
-// Check if cookies are set and populate the saved username
-$savedUsername = isset($_COOKIE['username']) ? $_COOKIE['username'] : '';
-
-if (!isset($_SESSION['username'])) {
-    header('Location: login.php');
-    exit();
-}
-
-$username = $_SESSION['username'];
+// Close the database connection
+$conn->close();
 ?>
-
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Login</title>
-</head>
-<body>
-    <h1>Login Page</h1>
-    
-    <form action="login.php" method="post">
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" value="<?php echo $savedUsername; ?>" required><br><br>
-        
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required><br><br>
-        
-        <label for="remember">Remember me:</label>
-        <input type="checkbox" name="remember" id="remember"><br><br>
-        
-        <input type="submit" name="login" value="Login">
-    </form>
-
-    <h1>Sign Up Page</h1>
-    
-    <form action="login.php" method="post">
-        <label for="email">Email:</label>
-        <input type="email" name="email" id="email" required><br><br>
-        
-        <label for="contact_number">Contact Number:</label>
-        <input type="text" name="contact_number" id="contact_number" required><br><br>
-        
-        <label for="username">Username:</label>
-        <input type="text" name="username" id="username" required><br><br>
-        
-        <label for="password">Password:</label>
-        <input type="password" name="password" id="password" required><br><br>
-        
-        <input type="submit" name="signup" value="Sign Up">
-    </form>
-</body>
-</html>

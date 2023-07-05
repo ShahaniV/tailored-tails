@@ -1,0 +1,35 @@
+--Landing Page:
+
+Create a visually appealing landing page that introduces Tailored Tails and its purpose.
+Include images of dogs wearing clothes, a catchy slogan, and a brief introduction.
+Provide a login/signup button to allow users to create an account or log in.
+
+--Product Showcase (Homepage):
+
+Design a page to showcase a selection of pet clothing items.
+Display images, descriptions, and prices of the products.
+Allow users to add items to their cart without requiring them to log in.
+
+--Shopping Cart:
+
+Implement a simple shopping cart functionality.
+Allow users to add items to their cart from the product showcase page.
+Display the selected items, quantities, and total price on the shopping cart page.
+Provide options to update quantities or remove items from the cart.
+
+--Checkout:
+
+Create a checkout page where users can enter their contact information and complete the order.
+Collect user details such as name, shipping address, and contact number.
+Display a summary of the order, including selected items and total price.
+Include a "Submit Order" button to finalize the order.
+
+--Styling and Layout:
+
+Use CSS to enhance the visual appearance of your website.
+Apply a clean and minimalist design to keep the interface simple and user-friendly.
+
+--Responsive Design:
+
+Ensure your website is responsive and adjusts well to different screen sizes.
+Use responsive design techniques to adapt the layout and elements for mobile devices.

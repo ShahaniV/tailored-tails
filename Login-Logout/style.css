@@ -1,0 +1,12 @@
+.container {
+    width: 300px;
+    margin: 0 auto;
+  }
+  
+  input[type="text"],
+  input[type="password"],
+  input[type="email"],
+  input[type="submit"] {
+    margin-bottom: 10px;
+  }
+  

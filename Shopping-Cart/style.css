@@ -1,0 +1,24 @@
+/* Add your CSS styles here */
+body {
+    font-family: Arial, sans-serif;
+}
+
+h1, h2 {
+    color: #333;
+}
+
+.product {
+    margin-bottom: 20px;
+}
+
+.product img {
+    width: 200px;
+}
+
+.product h2 {
+    margin: 10px 0;
+}
+
+form {
+    display: inline;
+}
