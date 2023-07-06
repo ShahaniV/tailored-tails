@@ -11,7 +11,7 @@
     <?php
     $servername = "localhost";
     $username = "root";
-    $password = "root";
+    $password = "";
     $dbname = "tailoredtailsusers";
     $conn = new mysqli($servername, $username, $password, $dbname);
     if ($conn->connect_error) {
