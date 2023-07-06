@@ -1,27 +1,72 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Tailored Tails - Cart</title>
-    <link rel="stylesheet" type="text/css" href="style.css">
-</head>
-<body>
-    <h1>Shopping Cart</h1>
-    <?php
-    // Check if product is added to the cart
-    if ($_SERVER["REQUEST_METHOD"] === "POST") {
-        $productId = $_POST["product_id"];
-        // Add product to cart logic goes here
-        // You can store the product details in session or database
-        // and retrieve the cart items to display here
+<?php
+session_start();
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "tailoredtailsusers";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Check if the user is logged in
+if (isset($_SESSION['user_id'])) {
+    $user_id = $_SESSION['user_id'];
+
+    // Handle add to cart
+    if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['add_to_cart'])) {
+        $product_id = $_POST["product_id"];
+
+        // Check if the product is already in the cart
+        $query = "SELECT * FROM cart WHERE user_id = '$user_id' AND product_id = '$product_id'";
+        $result = $conn->query($query);
+
+        if ($result && $result->num_rows > 0) {
+            echo "Product already exists in the cart.";
+        } else {
+            // Add the product to the cart
+            $query = "INSERT INTO cart (user_id, product_id) VALUES ('$user_id', '$product_id')";
+            if ($conn->query($query) === TRUE) {
+                echo "Product added to the cart.";
+            } else {
+                echo "Error: " . $conn->error;
+            }
+        }
     }
-    // Display cart items and total
-    echo "<h2>Cart Items</h2>";
-    // Display the cart items retrieved from session or database
-    // using PHP loops and HTML markup
-    // Example: echo "<p>Product Name: $productName, Price: $price</p>";
-    echo "<h2>Total: $0.00</h2>"; // Calculate and display the total
-    ?>
-    <a href="products.php">Continue Shopping</a>
-    <a href="checkout.php">Proceed to Checkout</a>
-</body>
-</html>
+
+    // Get the cart items for the user
+    $query = "SELECT cart.cart_id, products.name, products.price FROM cart
+              INNER JOIN products ON cart.product_id = products.product_id
+              WHERE cart.user_id = '$user_id'";
+    $result = $conn->query($query);
+
+    if ($result) {
+        if ($result->num_rows > 0) {
+            // Display the cart items
+            echo "<h2>Your Cart</h2>";
+            echo "<table>";
+            echo "<tr><th>Item</th><th>Price</th></tr>";
+
+            while ($row = $result->fetch_assoc()) {
+                echo "<tr>";
+                echo "<td>" . $row['name'] . "</td>";
+                echo "<td>$" . $row['price'] . "</td>";
+                echo "</tr>";
+            }
+
+            echo "</table>";
+        } else {
+            echo "Your cart is empty.";
+        }
+    } else {
+        echo "Error: " . $conn->error;
+    }
+} else {
+    echo "Please log in to view your cart.";
+}
+
+$conn->close();
+?>

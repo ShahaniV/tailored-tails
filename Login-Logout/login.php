@@ -41,18 +41,19 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 session_start();
                 $_SESSION["username"] = $loginUsername;
             }
-
             // Redirect to homepage.html
             header("Location: http://localhost/AppDevGalura/tailored-tails/UI/homepage.html");
             exit();
         } else {
             // Incorrect password, redirect back to the login page
             header("Location: http://localhost/AppDevGalura/tailored-tails/Login-Logout/index.html");
+            echo "Incorrect password";
             exit();
         }
     } else {
         // Username not found, redirect back to the login page
         header("Location: http://localhost/AppDevGalura/tailored-tails/Login-Logout/index.html");
+        echo "Incorrect username";
         exit();
     }
 }
