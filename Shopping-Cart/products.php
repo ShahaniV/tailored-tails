@@ -1,28 +1,25 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Tailored Tails - Products</title>
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
     <h1>Our Products</h1>
-
     <?php
     $servername = "localhost";
     $username = "root";
-    $password = "";
+    $password = "root";
     $dbname = "tailoredtailsusers";
-
     $conn = new mysqli($servername, $username, $password, $dbname);
-
     if ($conn->connect_error) {
         die("Connection failed: " . $conn->connect_error);
     }
-
     // Retrieve all products from the database
     $query = "SELECT * FROM products";
     $result = $conn->query($query);
-
     if ($result && $result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             echo "<div class='product'>";
@@ -39,8 +36,8 @@
     } else {
         echo "No products found.";
     }
-
     $conn->close();
     ?>
 </body>
+
 </html>
