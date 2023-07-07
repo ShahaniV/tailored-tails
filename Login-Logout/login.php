@@ -2,7 +2,7 @@
 // Establish the database connection
 $servername = "localhost";
 $username = "root";
-$password = ""; // Assuming the password is empty
+$password = "root"; // Assuming the password is empty
 $dbname = "tailoredtailsusers";
 $conn = new mysqli($servername, $username, $password, $dbname);
 
